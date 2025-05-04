@@ -7,7 +7,7 @@
 
 <script setup>
 import { useRouter } from 'vue-router';
-import Button from "primevue/button"
+import Button from "primevue/button";
 import Polaroid from '@/components/PolaroidPhoto.vue';
 const router = useRouter();
 
