@@ -5,8 +5,8 @@
     <Button @click="rotateCard" class="ml-4">Rotate the Card</Button>
 
     <div>
-      <div class="inline-flex" ref="box">
-        <Polaroid />
+      <div class="inline-flex" style="transform-style: preserve-3d;" ref="box">
+        <Polaroid/>
       </div>
     </div>
   </div>
@@ -21,6 +21,7 @@ import Polaroid from "@/components/PolaroidPhoto.vue";
 
 const router = useRouter();
 const box = ref(null);
+const flipped = ref(false);
 
 function PlayGame() {
   router.push("/PlayGame");
@@ -28,11 +29,13 @@ function PlayGame() {
 
 function rotateCard() {
   gsap.to(box.value, {
-    rotation: 360,
-    duration: 2,
+    transformOrigin: "center center",
+    rotationY: (flipped.value) ? 360 : 180,
+    duration: 1,
     ease: "power1.inOut",
     onComplete() {
       gsap.set(box.value, { rotation: 0 });
+      flipped.value = !flipped.value;
     },
   });
 }
