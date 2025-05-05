@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "tailwind": "npx @tailwindcss/cli -i ./src/styles/input.css -o ./src/styles/output.css --watch",
+    "tailwind": "npx tailwindcss -i ./src/styles/input.css -o ./src/styles/output.css --watch",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
   },
@@ -12,10 +12,9 @@
     "@egjs/view360": "^3.6.4",
     "@egjs/vue3-view360": "4.0.0-beta.7",
     "@primeuix/themes": "^1.0.3",
-    "@tailwindcss/cli": "^4.1.4",
     "core-js": "^3.8.3",
+    "gsap": "^3.13.0",
     "primevue": "^4.3.3",
-    "tailwindcss": "^4.1.4",
     "vue": "^3.2.13",
     "vue-router": "^4.5.1",
     "vue3-google-map": "^0.22.0"
@@ -27,7 +26,8 @@
     "@vue/cli-plugin-eslint": "~5.0.0",
     "@vue/cli-service": "~5.0.0",
     "eslint": "^7.32.0",
-    "eslint-plugin-vue": "^8.0.3"
+    "eslint-plugin-vue": "^8.0.3",
+    "tailwindcss": "3"
   },
   "eslintConfig": {
     "root": true,
