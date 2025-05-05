@@ -13,5 +13,4 @@
 </template>
 
 <script setup>
-// no changes here
 </script>

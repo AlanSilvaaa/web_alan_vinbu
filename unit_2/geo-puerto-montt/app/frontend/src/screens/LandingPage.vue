@@ -1,9 +1,7 @@
 <template>
   <div class="p-8 space-y-6">
-    <!-- Your existing “Play Game” button -->
     <Button @click="PlayGame">Click here to play the game</Button>
 
-    <!-- New button to trigger the rotation -->
     <Button @click="rotateCard" class="ml-4">Rotate the Card</Button>
 
     <div>
@@ -17,7 +15,7 @@
 <script setup>
 import { ref } from "vue";
 import { useRouter } from "vue-router";
-import gsap from "gsap"; // npm install gsap
+import gsap from "gsap";
 import Button from "primevue/button";
 import Polaroid from "@/components/PolaroidPhoto.vue";
 
@@ -29,12 +27,10 @@ function PlayGame() {
 }
 
 function rotateCard() {
-  // gsap.to targets the DOM element and animates rotation
   gsap.to(box.value, {
     rotation: 360,
     duration: 2,
     ease: "power1.inOut",
-    // optional: reset rotation after complete so it can run again
     onComplete() {
       gsap.set(box.value, { rotation: 0 });
     },
@@ -42,6 +38,4 @@ function rotateCard() {
 }
 </script>
 
-<style>
-/* No extra CSS needed—Tailwind covers it */
-</style>
+<style></style>
