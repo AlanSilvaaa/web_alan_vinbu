@@ -3,7 +3,7 @@
 import { onMounted } from "vue";
 import { Loader } from "@googlemaps/js-api-loader";
 
-const center = { lat: 40.689247, lng: -74.044502 };
+const center = { lat: -41.31999949376208, lng: -72.98907216042424 };
 
 onMounted(async () => {
   const loader = new Loader({
@@ -18,10 +18,12 @@ onMounted(async () => {
     pov: { heading: 165, pitch: 0 },
     zoom: 1,
     addressControl: false,
+    disableDefaultUI: true,
+    showRoadLabels: false,
   });
 });
 </script>
 
 <template>
-  <div id="street-view" style="width: 100%; height: 500px"></div>
+  <div id="street-view" style="width: 100%; height: 100vh"></div>
 </template>
