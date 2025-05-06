@@ -18,7 +18,7 @@
       <ul>
         <li class="text-gray-700">1. 3 minutos por ronda</li>
         <li class="text-gray-700">2. 3 rondas</li>
-        <li class="text-gray-700">3. Puedes mover el mapa</li>
+        <li class="text-gray-700">3. Puedes mover la cámara</li>
       </ul>
     </div>
   </div>
