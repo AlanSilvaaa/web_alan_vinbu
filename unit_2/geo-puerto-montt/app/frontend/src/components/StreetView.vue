@@ -1,6 +1,6 @@
 <script setup>
 /* global google */
-import { onMounted } from "vue";
+import { onMounted , ref } from "vue";
 import { Loader } from "@googlemaps/js-api-loader";
 import { GoogleMap } from 'vue3-google-map'
 
@@ -89,20 +89,45 @@ onMounted(async () => {
     showRoadLabels: false,
   });
 });
+
+const opacityValue = ref(0.5);
+const heightValue = ref("250px");
+const widthValue = ref("30%");
+
+// This functions manage the Minimap´s properties according to mouse movement
+function mouseEnterMiniMap() {
+  widthValue.value = "40%";
+  heightValue.value = "300px";
+  opacityValue.value = 1;
+}
+
+function mouseLeaveMiniMap() {
+  widthValue.value = "30%";
+  heightValue.value = "250px";
+  opacityValue.value = 0.5;
+}
+
 </script>
 
 <template>
-  <div id="street-view" style="width: 100%; height: 100vh">
-    <div>
-        <template>
-          <GoogleMap
-          :api-key= apiKey
-          style="width: 50%; height: 300px"
-          :center= center_minimap
-          :zoom="10"
-          >
-          </GoogleMap>
-      </template>
-    </div>
+  <div class="relative z-0" id="street-view" style="width: 100%; height: 100vh">
+    <div class="absolute right-0 z-10 bottom-0" 
+    id="mapa" 
+    :style="{width: widthValue,
+    height: heightValue,
+    opacity: opacityValue,
+    transition: 'width 0.3s, height 0.3s, opacity 0.3s'}" 
+    @mouseenter="mouseEnterMiniMap" 
+    @mouseleave="mouseLeaveMiniMap">
+    <GoogleMap
+      :api-key= apiKey
+      style="height: 300px;"
+      :center= center_minimap
+      :zoom="10"
+      :disable-default-ui="true"
+    >
+    </GoogleMap>
   </div>
+  </div>
+
 </template>
