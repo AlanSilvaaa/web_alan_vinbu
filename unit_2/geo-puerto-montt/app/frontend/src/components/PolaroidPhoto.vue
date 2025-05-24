@@ -20,22 +20,30 @@
           {{ index + 1 }}. {{ rule }}
         </li>
       </ul>
+      <Button @click="handlePlayGame">Jugar</Button>
     </div>
   </div>
 </template>
 
 <script setup>
-import { defineProps, ref } from 'vue';
+import { defineProps, ref, defineEmits } from 'vue';
 import { useSound } from "@vueuse/sound";
 import hover_card from "../assets/sounds/hover_card.wav";
 import gsap from "gsap";
+import { Button } from 'primevue';
 
 const props = defineProps(["data"]);
 const front = ref(props.data.front);
 const back = ref(props.data.back);
 const card = ref(null);
+const emit = defineEmits(["playGame"]);
 
 const { play: hoverCardSound } = useSound(hover_card, { volume: 0.5 });
+
+
+function handlePlayGame() {
+  emit("playGame", "Test message");
+}
 
 function hoverCard() {
   hoverCardSound();
