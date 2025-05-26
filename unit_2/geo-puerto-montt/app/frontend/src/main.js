@@ -9,7 +9,12 @@ const app = createApp(App)
 app.use(router)
 app.use(PrimeVue, {
     theme: {
-        preset: Aura
+        preset: Aura,
+        options: {
+            prefix: 'p',
+            darkModeSelector: '.my-app-dark', // force dark mode
+            cssLayer: false
+        }
     }
 });
 app.mount('#app')
