@@ -1,6 +1,6 @@
 <script setup>
 /* global google */
-import { onMounted , ref } from "vue";
+import { onMounted, ref } from "vue";
 import { Loader } from "@googlemaps/js-api-loader";
 import { GoogleMap } from 'vue3-google-map'
 
@@ -94,7 +94,7 @@ const opacityValue = ref(0.5);
 const heightValue = ref("250px");
 const widthValue = ref("30%");
 
-// This functions manage the Minimap´s properties according to mouse movement
+//This functions manage the Minimap´s properties according to mouse movement
 function mouseEnterMiniMap() {
   widthValue.value = "40%";
   heightValue.value = "300px";
@@ -107,27 +107,61 @@ function mouseLeaveMiniMap() {
   opacityValue.value = 0.5;
 }
 
+const mapInstance = ref(null)
+const marker = ref(null)
+const googleMapComponent = ref(null)
+console.log("Mensaje de referencia")
+onMounted(() => {
+  const checkMap = setInterval(() => {
+    const map = googleMapComponent.value?.map
+    if (map) {
+      clearInterval(checkMap)
+      mapInstance.value = map
+      console.log("Mapa cargado:", map)
+
+      map.addListener("click", (event) => {
+        console.log("Click detectado en:", event.latLng.toJSON())
+
+        if (marker.value) {
+          marker.value.setMap(null)
+        }
+
+        marker.value = new google.maps.Marker({
+          position: event.latLng,
+          map: map,
+        })
+      })
+    }
+  }, 200)
+})
+
 </script>
 
 <template>
   <div class="relative z-0" id="street-view" style="width: 100%; height: 100vh">
-    <div class="absolute right-0 z-10 bottom-0" 
-    id="mapa" 
-    :style="{width: widthValue,
-    height: heightValue,
-    opacity: opacityValue,
-    transition: 'width 0.3s, height 0.3s, opacity 0.3s'}" 
-    @mouseenter="mouseEnterMiniMap" 
-    @mouseleave="mouseLeaveMiniMap">
-    <GoogleMap
-      :api-key= apiKey
-      style="height: 300px;"
-      :center= center_minimap
-      :zoom="10"
-      :disable-default-ui="true"
-    >
-    </GoogleMap>
-  </div>
+    <div
+      id="mapa" 
+      :style="{
+      position: 'absolute',
+      right: '0',
+      bottom: '0',
+      width: widthValue,
+      height: heightValue,
+      opacity: opacityValue,
+      zIndex: 10,
+      transition: 'width 0.3s, height 0.3s, opacity 0.3s'}" 
+      @mouseenter="mouseEnterMiniMap" 
+      @mouseleave="mouseLeaveMiniMap">
+      <GoogleMap
+        ref="googleMapComponent"
+        :api-key= apiKey
+        style="height: 300px;"
+        :center= center_minimap
+        :zoom="10"
+        :disable-default-ui="true"
+      >
+      </GoogleMap>
+    </div>
   </div>
 
 </template>
