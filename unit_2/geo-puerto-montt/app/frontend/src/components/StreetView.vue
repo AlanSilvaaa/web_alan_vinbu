@@ -2,10 +2,13 @@
 /* global google */
 import { onMounted, ref } from "vue";
 import { Loader } from "@googlemaps/js-api-loader";
-import { GoogleMap } from 'vue3-google-map'
+import { GoogleMap } from 'vue3-google-map';
+import { Button } from 'primevue';
+import { useRouter } from 'vue-router'
 
 const apiKey = process.env.VUE_APP_GOOGLE_MAPS_API_KEY;
 const center_minimap = { lat: -41.333333333333, lng: -72.833333333333 };
+const router = useRouter()
 
 const locations = {
   1: [-41.45099080993633, -72.91137907054409],
@@ -87,6 +90,10 @@ onMounted(async () => {
     addressControl: false,
     disableDefaultUI: true,
     showRoadLabels: false,
+    // Unable camera movement
+    // clickToGo: false,
+    // linksControl: false,
+    // panControl: false,
   });
 });
 
@@ -110,7 +117,9 @@ function mouseLeaveMiniMap() {
 const mapInstance = ref(null)
 const marker = ref(null)
 const googleMapComponent = ref(null)
+const clickedPosition = ref(null)
 console.log("Mensaje de referencia")
+
 onMounted(() => {
   const checkMap = setInterval(() => {
     const map = googleMapComponent.value?.map
@@ -120,6 +129,7 @@ onMounted(() => {
       console.log("Mapa cargado:", map)
 
       map.addListener("click", (event) => {
+        clickedPosition.value = event.latLng.toJSON();
         console.log("Click detectado en:", event.latLng.toJSON())
 
         if (marker.value) {
@@ -134,6 +144,29 @@ onMounted(() => {
     }
   }, 200)
 })
+
+function handleGuess() {
+  console.log("clickedPosition:", clickedPosition.value);
+
+  if (!clickedPosition.value) {
+    alert("¡Debes hacer clic en el mapa primero!");
+    return;
+  }
+
+  Results(clickedPosition.value, center);
+}
+
+function Results(position, realPosition) {
+  router.push({
+    path: "/ResultsScreen",
+    query: {
+      miniLat: position?.lat ?? 0,
+      miniLng : position?.lng ?? 0,
+      realLat: realPosition.lat,
+      realLng: realPosition.lng,
+    }
+    });
+}
 
 </script>
 
@@ -157,10 +190,13 @@ onMounted(() => {
         :api-key= apiKey
         style="height: 300px;"
         :center= center_minimap
-        :zoom="10"
+        :zoom="7"
         :disable-default-ui="true"
       >
       </GoogleMap>
+      <div class="absolute bottom-2 left-1/2 transform -translate-x-1/2 z-50">
+        <Button @click="handleGuess" severity="success" raised>Adivinar</Button>
+      </div>
     </div>
   </div>
 
